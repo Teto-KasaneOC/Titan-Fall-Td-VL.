@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Titan Fall Tower Defense | Value List</title>
+<meta name="description" content="Official Titan Fall Tower Defense value list.">
+<meta name="theme-color" content="#0f1113">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1113;--plate:#1b1e22;--plate2:#292d33;--steel:#5f6a75;--lite:#aeb9c3;--bone:#dde1e4;--glow:#9fd8e8;--ink:#060708}
+*{box-sizing:border-box;margin:0}
+body{font:500 19px/1.3 'Barlow Condensed',Arial Narrow,sans-serif;color:var(--bone);background:radial-gradient(ellipse at 50% 0,#252a31,var(--bg) 70%) fixed;min-height:100vh}
+body.bold{font-weight:700}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.2;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+body.locked{overflow:hidden;height:100vh}
+h1,h2,h3,.btn,.big,.band,select{font-family:'Saira Stencil One',Impact,sans-serif;font-weight:400;letter-spacing:.05em}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spin{to{--a:360deg}}
+
+/* ---------- intro: fist breaks the screen ---------- */
+#intro{position:fixed;inset:0;z-index:100;overflow:hidden}
+#intro.done{display:none}
+.shard{position:absolute;inset:0;transition:transform 1.5s cubic-bezier(.5,0,.9,.4);transition-delay:var(--d)}
+#intro.boom .shard{transform:translate(var(--bx),var(--by)) rotate(var(--br));transition:transform .35s cubic-bezier(.1,.8,.3,1);transition-delay:0s}
+#intro.fall .shard{transform:translate(var(--x),130vh) rotate(var(--r));transition:transform 1.5s cubic-bezier(.5,0,.9,.4);transition-delay:var(--d)}
+#cracks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#cracks line{stroke:var(--bone);stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--glow));stroke-dasharray:1;stroke-dashoffset:1}
+#intro.boom #cracks line{animation:draw .25s forwards;animation-delay:var(--d)}
+@keyframes draw{to{stroke-dashoffset:0}}
+#iui{position:absolute;inset:0;z-index:1;display:grid;place-content:center;justify-items:center;gap:34px;text-align:center;background:radial-gradient(#0000,#000b);transition:opacity .25s}
+#intro.charge #iui{opacity:0;pointer-events:none}
+#iui h1{font-size:clamp(48px,11vw,128px);line-height:.92;color:var(--bone);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 0 40px #9fd8e855}
+#enter{font-size:24px;color:var(--bone);background:linear-gradient(var(--plate2),var(--plate));border:3px solid var(--lite);outline:3px solid var(--ink);padding:14px 40px;cursor:pointer;transition:.2s}
+#enter:hover{background:var(--glow);color:var(--ink);box-shadow:0 0 36px var(--glow)}
+#core{position:absolute;left:50%;top:50%;width:30vmax;height:30vmax;margin:-15vmax 0 0 -15vmax;border-radius:50%;z-index:3;opacity:0;transform:scale(0);pointer-events:none;background:radial-gradient(circle,#fff 0,#d4f1f8 22%,#9fd8e8 42%,#9fd8e800 70%)}
+#intro.charge #core{animation:charge .7s ease-in forwards}
+#intro.boom #core{animation:fire .8s ease-out forwards}
+@keyframes charge{0%{opacity:0;transform:scale(0)}100%{opacity:1;transform:scale(.1)}}
+@keyframes fire{0%{opacity:1;transform:scale(.1)}30%{opacity:1;transform:scale(2.4)}100%{opacity:0;transform:scale(3.4)}}
+#ring{position:absolute;left:50%;top:50%;width:20vmax;height:20vmax;margin:-10vmax 0 0 -10vmax;border-radius:50%;border:6px solid #e8f6fb;box-shadow:0 0 40px var(--glow),inset 0 0 40px var(--glow);z-index:3;opacity:0;transform:scale(0);pointer-events:none}
+#intro.boom #ring{animation:ring .9s ease-out forwards}
+@keyframes ring{0%{opacity:1;transform:scale(0)}100%{opacity:0;transform:scale(4.5)}}
+#sparks{position:absolute;inset:0;z-index:3;pointer-events:none}
+.spark{position:absolute;left:50%;top:50%;width:4px;height:30px;border-radius:2px;background:linear-gradient(#fff,var(--glow));opacity:0;transform:rotate(var(--a))}
+#intro.boom .spark{animation:spark .8s ease-out forwards;animation-delay:var(--sd)}
+@keyframes spark{0%{opacity:1;transform:rotate(var(--a)) translateY(0)}100%{opacity:0;transform:rotate(var(--a)) translateY(var(--dd))}}
+#flash{position:absolute;inset:0;z-index:4;background:#e8f6fb;opacity:0;pointer-events:none}
+#intro.boom #flash{animation:flash .6s ease-out}
+@keyframes flash{from{opacity:.95}to{opacity:0}}
+#intro.charge:not(.boom){animation:shake .05s 14}
+#intro.boom:not(.fall){animation:shake .07s 9}
+@keyframes shake{25%{transform:translate(-8px,4px)}75%{transform:translate(8px,-4px)}}
+
+/* ---------- header ---------- */
+header{max-width:1180px;margin:0 auto;padding:44px 20px 0;display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-end}
+#title h2{font-size:clamp(46px,9vw,98px);line-height:.9;color:var(--bone);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:4px 4px 0 var(--ink),0 0 36px #9fd8e822}
+#title h3{font-size:clamp(18px,3vw,30px);color:var(--glow);letter-spacing:.32em;margin-top:6px}
+.plate{position:relative;border:3px solid var(--ink);box-shadow:inset 0 0 0 2px #ffffff12,inset 0 2px 0 #ffffff1c,0 5px 0 #000a;
+  background:radial-gradient(circle at 9px 9px,#8d99a4 0 2px,#0000 3px),radial-gradient(circle at calc(100% - 9px) 9px,#8d99a4 0 2px,#0000 3px),
+  radial-gradient(circle at 9px calc(100% - 9px),#8d99a4 0 2px,#0000 3px),radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#8d99a4 0 2px,#0000 3px),
+  linear-gradient(var(--plate2),var(--plate))}
+#rate{padding:12px 34px;font-size:22px;color:var(--lite);text-align:center}
+#rate b{font:400 30px 'Saira Stencil One';color:var(--glow);text-shadow:0 0 14px #9fd8e866}
+
+/* ---------- controls ---------- */
+#ctrl{max-width:1180px;margin:34px auto 0;padding:0 20px}
+#top{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.btn{font-size:16px;color:var(--lite);background:var(--plate);border:2px solid var(--steel);outline:2px solid var(--ink);padding:7px 16px;cursor:pointer;transition:.2s}
+.btn:hover{border-color:var(--glow);color:var(--glow);box-shadow:0 0 18px #9fd8e844}
+.btn.on{background:var(--glow);color:var(--ink);border-color:var(--glow)}
+#searchbox{position:relative;max-width:780px;margin:0 auto;padding:3px;border-radius:6px;background:conic-gradient(from var(--a),#0000 50%,var(--glow) 82%,#fff 92%,#0000);animation:spin 3.5s linear infinite;box-shadow:0 0 26px #9fd8e822;transition:box-shadow .3s}
+#searchbox:focus-within{box-shadow:0 0 60px #9fd8e8aa;animation-duration:1.1s}
+#sin{display:flex;align-items:center;gap:14px;background:#0a0b0d;border-radius:4px;padding:6px 20px;color:var(--glow)}
+#search{flex:1;min-width:0;font:700 25px 'Barlow Condensed',sans-serif;letter-spacing:.04em;color:var(--bone);background:none;border:0;outline:0;padding:8px 0}
+#search::placeholder{color:#5f6a75}
+#chips{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px}
+.chip{font-size:20px;color:var(--c,var(--bone));background:var(--plate);border:2px solid var(--c,var(--lite));outline:2px solid var(--ink);padding:7px 22px;cursor:pointer;transition:.2s}
+.chip:nth-child(even){margin-top:10px}
+.chip:hover{transform:translateY(-4px);box-shadow:0 0 22px var(--c,var(--lite))}
+.chip.on{background:var(--c,var(--lite));color:var(--ink)}
+.chip.clear{border-style:dashed;font-size:16px;color:var(--steel);border-color:var(--steel)}
+#count{text-align:center;margin-top:22px;color:var(--steel);letter-spacing:.1em}
+
+/* ---------- cards ---------- */
+#grid{max-width:1180px;margin:14px auto 0;padding:20px 20px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:26px 22px}
+body.compact #grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px 12px}
+body.compact .pic{height:80px;font-size:44px}body.compact .big{font-size:32px}
+.card{position:relative;overflow:hidden;background:linear-gradient(var(--plate2),var(--plate));border:3px solid var(--ink);
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 45%,transparent),0 6px 14px #000a;
+  transition:transform .25s,box-shadow .25s;animation:in .45s backwards;animation-delay:var(--i)}
+@keyframes in{from{opacity:0;transform:translateY(24px) scale(.96)}}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,#0000 38%,#ffffff22 50%,#0000 62%);transform:translateX(-130%);transition:transform .7s}
+.card:hover{transform:translateY(-9px);box-shadow:inset 0 0 0 2px var(--c),0 0 34px color-mix(in srgb,var(--c) 55%,transparent),0 20px 30px #000d}
+.card:hover::after{transform:translateX(130%)}
+.band{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font-size:17px;color:var(--c);background:#0c0d10;border-bottom:3px solid var(--ink)}
+.card[data-fx=shine] .band{background:linear-gradient(100deg,#0c0d10 40%,#3a4048 50%,#0c0d10 60%) 100% 0/250%;animation:shine 2.4s linear infinite}
+@keyframes shine{to{background-position:-150% 0}}
+.card[data-fx=glow]{animation:in .45s backwards,pulse 2.2s ease-in-out infinite alternate;animation-delay:var(--i),0s}
+@keyframes pulse{to{box-shadow:inset 0 0 0 2px var(--c),0 0 22px color-mix(in srgb,var(--c) 50%,transparent),0 6px 14px #000a}}
+.tr{font-size:15px;color:var(--lite)}.Rising{color:var(--glow)}.Falling{color:#78828c}
+.pic{height:128px;display:grid;place-items:center;overflow:hidden;border-bottom:3px solid var(--ink);color:var(--c);font:400 64px 'Saira Stencil One',sans-serif;-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;
+  background:radial-gradient(circle at 50% 75%,color-mix(in srgb,var(--c) 26%,#0000),#0000 70%),repeating-linear-gradient(45deg,#ffffff07 0 2px,#0000 2px 9px),#101215}
+.pic img{width:100%;height:100%;object-fit:contain;transition:transform .35s}
+.card:hover .pic>*{transform:scale(1.12)}
+.in{padding:10px 14px 14px}
+.nm{font-size:21px;letter-spacing:.03em;text-transform:uppercase}
+.big{font-size:40px;line-height:1.1;color:var(--bone);text-shadow:0 0 16px color-mix(in srgb,var(--c) 45%,transparent)}
+.dm{display:flex;align-items:center;gap:4px;font-size:15px;margin-top:6px;color:var(--steel)}
+.dm i{width:22px;height:6px;background:#0a0b0d;border:1px solid var(--steel)}.dm i.on{background:var(--c);border-color:var(--c)}
+.empty{grid-column:1/-1;text-align:center;font:400 30px 'Saira Stencil One';color:var(--steel);padding:50px 0}
+footer{text-align:center;padding:0 20px 40px;color:var(--steel)}footer a{color:var(--glow)}
+:focus-visible{outline:3px solid var(--glow);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body class="locked">
+
+<script>
+/* =====================================================================
+   EDIT HERE: settings, rarities and units all live in this one block
+   ===================================================================== */
+const SITE = {
+  thumbnail: "thumbnail.png",        // game thumbnail used by the intro (same folder as index.html)
+  conversion: "1 Value = 1 Value",   // text on the plate under the title, change it any time
+  updated: "Nov 2026",
+  discord: ""                        // paste an invite link, or leave "" to hide it
+};
+
+// RARITIES: add as many as you like, lowest to highest. Keep colors cold/steel.
+// fx (optional): "shine" = light sweep, "glow" = pulsing glow
+const RARITIES = [
+  { name: "Rare",      color: "#7c8894" },
+  { name: "Epic",      color: "#9db2c2" },
+  { name: "Legendary", color: "#dfe5ea", fx: "shine" },
+  { name: "Myth",      color: "#9fe3f2", fx: "glow" }
+  // { name: "Secret", color: "#ffffff", fx: "glow" },   <- remove the // to add a rarity
+];
+
+// UNITS: copy a line, paste it, edit it. Keep the comma at the end of every line.
+// rarity    = one of the names above
+// Price     = a number
+// demand    = "Low" / "Medium" / "High"  (or a number from 1 to 10)
+// stability = "Rising" / "Stable" / "Falling"  (any other word also works)
+// imageUrl  = "img/unit.png" or a full link, or "" for none
+const ITEMS = [
+  { name: "Example Unit 1", rarity: "Myth",      Price: 900, demand: "High",   stability: "Rising",  imageUrl: "" },
+  { name: "Example Unit 2", rarity: "Legendary", Price: 350, demand: "High",   stability: "Stable",  imageUrl: "" },
+  { name: "Example Unit 3", rarity: "Epic",      Price: 120, demand: "Medium", stability: "Falling", imageUrl: "" },
+  { name: "Example Unit 4", rarity: "Rare",      Price: 30,  demand: "Low",    stability: "Stable",  imageUrl: "" },
+];
+/* ===================== END OF EDIT AREA ===================== */
+</script>
+
+<div id="intro">
+  <div id="shards"></div><svg id="cracks" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+  <div id="iui"><h1>TITAN FALL<br>TOWER DEFENSE</h1><button id="enter">VIEW VALUE LIST</button></div>
+  <div id="core"></div><div id="ring"></div><div id="sparks"></div>
+  <div id="flash"></div>
+</div>
+
+<header>
+  <div id="title"><h2>TITAN FALL</h2><h3>TOWER DEFENSE VALUE LIST</h3></div>
+  <div id="rate" class="plate"><b id="conv"></b></div>
+</header>
+
+<div id="ctrl">
+  <div id="top">
+    <button class="btn" id="bold">Bold text</button>
+    <select class="btn" id="sort"><option value="rarity">Rarity first</option><option value="hi">Value high to low</option><option value="lo">Value low to high</option><option value="az">Name A-Z</option></select>
+    <button class="btn" id="mini">Small cards</button>
+  </div>
+  <div id="searchbox"><div id="sin"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l6 6"/></svg>
+    <input id="search" type="search" placeholder="SEARCH UNITS..." autocomplete="off"></div></div>
+  <div id="chips"></div>
+  <div id="count"></div>
+</div>
+<section id="grid"></section>
+<footer id="foot"></footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const ri = n => RARITIES.findIndex(r => r.name === n);
+const R = n => RARITIES[ri(n)] || { color: "#7c8894" };
+let pick = "All";
+
+/* intro: fist -> impact -> radial shards fall */
+const o = [[0,0],[50,0],[100,0],[100,50],[100,100],[50,100],[0,100],[0,50]], n = [[25,25],[50,20],[75,25],[80,50],[75,75],[50,80],[25,75],[20,50]], C = [50,50];
+const polys = [], lines = [];
+for (let k = 0; k < 8; k++) { const j = (k + 1) % 8;
+  polys.push([C, n[k], n[j]], [n[k], o[k], o[j], n[j]]);
+  lines.push([...C, ...n[k]], [...n[k], ...o[k]], [...n[k], ...n[j]]); }
+const bg = `url(${SITE.thumbnail}) center/cover, radial-gradient(circle,#2d343b,#0b0c0e)`;
+$("shards").innerHTML = polys.map((p, i) => {
+  const cx = p.reduce((s, q) => s + q[0], 0) / p.length, cy = p.reduce((s, q) => s + q[1], 0) / p.length, d = Math.hypot(cx - 50, cy - 50);
+  return `<div class="shard" style="background:${bg};clip-path:polygon(${p.map(q => q[0] + "% " + q[1] + "%").join(",")});--d:${(d * .005).toFixed(2)}s;--x:${((cx - 50) * .5).toFixed(1)}vw;--r:${(i % 2 ? 1 : -1) * (180 + (i * 23) % 50)}deg;--bx:${((cx - 50) * .25).toFixed(1)}vw;--by:${((cy - 50) * .25).toFixed(1)}vh;--br:${((i * 11) % 14) - 7}deg"></div>`;
+}).join("");
+$("cracks").innerHTML = lines.map((l, i) => `<line pathLength="1" x1="${l[0]}" y1="${l[1]}" x2="${l[2]}" y2="${l[3]}" style="--d:${(i % 3 * .06 + (i > 2 ? .05 : 0)).toFixed(2)}s"/>`).join("");
+$("sparks").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="spark" style="--a:${i * 12 + (i % 3) * 4}deg;--dd:${40 + (i * 17) % 45}vmax;--sd:${(i % 4) * .03}s"></i>`).join("");
+$("enter").onclick = () => {
+  const el = $("intro"); el.classList.add("charge");
+  setTimeout(() => el.classList.add("boom"), 700);
+  setTimeout(() => el.classList.add("fall"), 1050);
+  setTimeout(() => { el.classList.add("done"); document.body.classList.remove("locked"); }, 3300);
+};
+
+/* controls */
+$("conv").textContent = SITE.conversion.toUpperCase();
+const order = RARITIES.map(r => r.name).reverse(); order.splice(Math.min(2, order.length), 0, "All");
+$("chips").innerHTML = order.map(x => `<button class="chip${x === "All" ? " on" : ""}" data-r="${x}" ${x === "All" ? "" : `style="--c:${R(x).color}"`}>${x}</button>`).join("") + `<button class="chip clear" data-r="clear">Clear</button>`;
+$("chips").onclick = e => {
+  const v = e.target.dataset.r; if (!v) return;
+  if (v === "clear") { $("search").value = ""; pick = "All"; } else pick = v;
+  document.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.r === pick));
+  render();
+};
+$("search").oninput = render; $("sort").onchange = render;
+$("bold").onclick = e => { document.body.classList.toggle("bold"); e.target.classList.toggle("on"); };
+$("mini").onclick = e => { document.body.classList.toggle("compact"); e.target.classList.toggle("on"); };
+
+function render() {
+  const q = $("search").value.trim().toLowerCase(), s = $("sort").value;
+  const list = ITEMS.filter(i => (pick === "All" || i.rarity === pick) && i.name.toLowerCase().includes(q)).sort((a, b) =>
+    s === "lo" ? a.Price - b.Price : s === "az" ? a.name.localeCompare(b.name) : s === "hi" ? b.Price - a.Price : ri(b.rarity) - ri(a.rarity) || b.Price - a.Price);
+  $("count").textContent = list.length + (list.length === 1 ? " UNIT" : " UNITS") + " FOUND";
+  $("grid").innerHTML = list.length ? list.map((i, k) => {
+    const r = R(i.rarity), d = typeof i.demand === "number" ? Math.ceil(i.demand / 3.34) : { Low: 1, Medium: 2, High: 3 }[i.demand] || 0, ar = { Rising: "▲", Falling: "▼", Stable: "■" }[i.stability] || "";
+    return `<article class="card" data-fx="${r.fx || ""}" style="--c:${r.color};--i:${Math.min(k, 20) * .04}s">
+      <div class="band"><span>${i.rarity}</span><span class="tr ${i.stability}">${ar} ${i.stability}</span></div>
+      <div class="pic">${i.imageUrl ? `<img src="${i.imageUrl}" alt="${i.name}">` : `<span>${i.name.charAt(0)}</span>`}</div>
+      <div class="in"><div class="nm">${i.name}</div><div class="big">${Number(i.Price).toLocaleString()}</div>
+      <div class="dm">DEMAND ${[1, 2, 3].map(x => `<i class="${x <= d ? "on" : ""}"></i>`).join("")}</div></div></article>`;
+  }).join("") : `<p class="empty">NO UNITS FOUND</p>`;
+}
+$("foot").innerHTML = "Last updated " + SITE.updated + (SITE.discord ? ` · <a href="${SITE.discord}">Discord</a>` : "");
+render();
+</script>
+</body>
+</html>
